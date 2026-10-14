@@ -1546,8 +1546,14 @@ Use meaningful filenames and follow applicable information-handling rules.`
 };
 
 for (const [folder, body] of Object.entries(guideBodies)) {
+  const folderPrefixMatch = folder.match(/^(\d{2})\s*-\s*/);
+
+  const guideFileName = folderPrefixMatch
+    ? `${folderPrefixMatch[1]} - Folder Guide.md`
+    : `${folder} - Folder Guide.md`;
+
   await ensureFile(
-    `${root}/${folder}/00 - Folder Guide.md`,
+    `${root}/${folder}/${guideFileName}`,
     `---
 project: ${projectName}
 type: folder-guide
@@ -1561,6 +1567,7 @@ ${body}
 `
   );
 }
+
 
 new Notice(`${projectName} project vault created successfully.`);
 %>
